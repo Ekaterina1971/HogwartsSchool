@@ -43,11 +43,20 @@ public class StudentController {
         return ResponseEntity.ok().build();
     }
     @GetMapping
-    public ResponseEntity<Collection<Student>> findStudents(@RequestParam(required = false) int age) {
-        if (age > 0) {
-            return ResponseEntity.ok(studentService.findByAge(age));
-        }
-        return ResponseEntity.ok(Collections.emptyList());
+    public Collection<Student> findAll() {
+        return studentService.getAllStudent();
     }
+
+    @GetMapping("byAgeBetween")
+    public Collection<Student> findByAgeBetween(@RequestParam int fromAge,
+                                                @RequestParam int toAge) {
+        return studentService.findByAgeBetween(fromAge, toAge);
+    }
+    //public ResponseEntity<Collection<Student>> findStudents(@RequestParam(required = false) int age) {
+      //  if (age > 0) {
+          //  return ResponseEntity.ok(studentService.findByAgeBetween());
+       // }
+      //  return ResponseEntity.ok(Collections.emptyList());
+   // }
 
 }
