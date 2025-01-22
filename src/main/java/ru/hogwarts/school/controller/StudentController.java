@@ -52,11 +52,5 @@ public class StudentController {
                                                 @RequestParam int toAge) {
         return studentService.findByAgeBetween(fromAge, toAge);
     }
-    //public ResponseEntity<Collection<Student>> findStudents(@RequestParam(required = false) int age) {
-      //  if (age > 0) {
-          //  return ResponseEntity.ok(studentService.findByAgeBetween());
-       // }
-      //  return ResponseEntity.ok(Collections.emptyList());
-   // }
 
 }

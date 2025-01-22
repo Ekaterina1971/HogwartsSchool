@@ -10,7 +10,7 @@ import java.util.Collections;
 import java.util.List;
 
 @RestController
-@RequestMapping
+@RequestMapping("/faculty")
 public class FacultyController {
     private final FacultyService facultyService;
 
@@ -61,11 +61,5 @@ public class FacultyController {
         return ResponseEntity.ok().build();
     }
 }
-   // @GetMapping
-   // public ResponseEntity<Collection<Faculty>> findFaculties(@RequestParam(required = false) String color) {
-      //  if (color != null && !color.isBlank()) {
-          //  return ResponseEntity.ok(facultyService.findByColor(color));
-        //}
-       // return ResponseEntity.ok(Collections.emptyList());
-   //}
+
 

@@ -43,13 +43,5 @@ public class FacultyService {
         return facultyRepository.findByNameIgnoreCaseAndColorIgnoreCase(name, color);
     }
 }
-    //public Collection<Faculty> findByColor(String color) {
-       // ArrayList<Faculty> result = new ArrayList<>();
-      //  for (Faculty faculty : facultyRepository.save() {
-          //  if (Objects.equals(faculty.getColor(), color)) {
-          //    //  result.add(faculty);
-          //  }
-      //  }
-      //  return result;
-   // }
+
 
