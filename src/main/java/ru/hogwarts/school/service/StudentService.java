@@ -3,6 +3,7 @@ package ru.hogwarts.school.service;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashMap;
+import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -41,4 +42,7 @@ public class StudentService {
         return studentRepository.findByAgeBetween(fromAge, toAge);
     }
 
+    public Optional<Student> findById(Long id) {
+        return studentRepository.findById(id);
+    }
 }

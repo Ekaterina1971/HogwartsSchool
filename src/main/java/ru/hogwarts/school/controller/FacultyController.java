@@ -3,11 +3,13 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import ru.hogwarts.school.model.Faculty;
+import ru.hogwarts.school.model.Student;
 import ru.hogwarts.school.service.FacultyService;
 
 import java.util.Collection;
 import java.util.Collections;
 import java.util.List;
+import java.util.Optional;
 
 @RestController
 @RequestMapping("/faculty")
@@ -59,6 +61,10 @@ public class FacultyController {
             return ResponseEntity.ok(facultyService.findByNameIgnoreCaseAndColorIgnoreCase(name, color));
         }
         return ResponseEntity.ok().build();
+    }
+    @GetMapping("/{facultyId}/students")
+    public Optional<Faculty> getStudentsByFacultyId(@PathVariable Long facultyId) {
+        return facultyService.findByFacultyId(facultyId);
     }
 }
 

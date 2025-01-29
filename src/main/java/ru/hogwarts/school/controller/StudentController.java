@@ -53,4 +53,11 @@ public class StudentController {
         return studentService.findByAgeBetween(fromAge, toAge);
     }
 
+    @GetMapping("/{studentId}/faculty")
+    public String getFacultyByStudentId(@PathVariable Long studentId) {
+        return studentService.findById(studentId)
+                .map(Student::getFaculty)
+                .orElse(null).toString();
+    }
+
 }
