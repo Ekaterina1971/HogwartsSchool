@@ -23,7 +23,7 @@ import static java.nio.file.StandardOpenOption.CREATE_NEW;
 public class StudentService {
     @Value("${avatars.dir.path}")
     private String avatarsDir;
-
+    @Autowired
     private final StudentRepository studentRepository;
     private final AvatarRepository avatarRepository;
 
