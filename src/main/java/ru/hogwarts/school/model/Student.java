@@ -72,4 +72,7 @@ public class Student {
     public Object getFaculty() {
         return id;
     }
+
+    public void setId(Long o) {
+    }
 }
