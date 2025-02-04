@@ -66,7 +66,7 @@ public class AvatarService {
     }
 
     public Avatar findAvatar(Long id) {
-        return avatarRepository.findAvatarById(id).orElseThrow();
+        return avatarRepository.findByStudentId(id).orElseThrow();
     }
 
     public Collection<Avatar> getAvatarLimit(Integer pageNamber, Integer pageSize) {

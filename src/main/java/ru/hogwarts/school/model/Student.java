@@ -74,5 +74,6 @@ public class Student {
     }
 
     public void setId(Long o) {
+
     }
 }
