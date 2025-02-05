@@ -21,15 +21,15 @@ import static java.nio.file.StandardOpenOption.CREATE_NEW;
 
 @Service
 public class StudentService {
-    @Value("${avatars.dir.path}")
-    private String avatarsDir;
+   // @Value("${avatars.dir.path}")
+   // private String avatarsDir;
     @Autowired
     private final StudentRepository studentRepository;
-    private final AvatarRepository avatarRepository;
+   // private final AvatarRepository avatarRepository;
 
-    public StudentService(StudentRepository studentRepository, AvatarRepository avatarRepository) {
+    public StudentService(StudentRepository studentRepository) {
         this.studentRepository = studentRepository;
-        this.avatarRepository = avatarRepository;
+       // this.avatarRepository = avatarRepository;
     }
 
     public Student addStudent(Student student) {
@@ -60,36 +60,36 @@ public class StudentService {
         return studentRepository.findById(id);
     }
 
-    public Avatar findAvatar(long studentId) {
-        return avatarRepository.findByStudentId(studentId).orElseThrow();
-    }
+   // public Avatar findAvatar(long studentId) {
+       // return avatarRepository.findByStudentId(studentId).orElseThrow();
+   // }
 
-    public void uploadAvatar(Long studentId, MultipartFile file) throws IOException {
-        Student student = findStudent(studentId);
+   // public void uploadAvatar(Long studentId, MultipartFile file) throws IOException {
+      //  Student student = findStudent(studentId);
 
-        Path filePath = Path.of(avatarsDir, studentId + "." + getExtension(file.getOriginalFilename()));
-        Files.createDirectories(filePath.getParent());
-        Files.deleteIfExists(filePath);
+      //  Path filePath = Path.of(avatarsDir, studentId + "." + getExtension(file.getOriginalFilename()));
+       // Files.createDirectories(filePath.getParent());
+       // Files.deleteIfExists(filePath);
 
-        try (InputStream is = file.getInputStream();
-             OutputStream os = Files.newOutputStream(filePath, CREATE_NEW);
-             BufferedInputStream bis = new BufferedInputStream(is, 1024);
-             BufferedOutputStream bos = new BufferedOutputStream(os, 1024);
-        ) {
-            bis.transferTo(bos);
-        }
-        Avatar avatar = avatarRepository.findByStudentId(studentId).orElseGet(Avatar::new);
-        avatar.setStudent(student);
-        avatar.setFilePath(filePath.toString());
-        avatar.setFileSize(file.getSize());
-        avatar.setMediaType(file.getContentType());
-        avatar.setData(file.getBytes());
+      //  try (InputStream is = file.getInputStream();
+      //       OutputStream os = Files.newOutputStream(filePath, CREATE_NEW);
+        //     BufferedInputStream bis = new BufferedInputStream(is, 1024);
+      //       BufferedOutputStream bos = new BufferedOutputStream(os, 1024);
+       // ) {
+        //    bis.transferTo(bos);
+      //  }
+      //  Avatar avatar = avatarRepository.findByStudentId(studentId).orElseGet(Avatar::new);
+     //   avatar.setStudent(student);
+      //  avatar.setFilePath(filePath.toString());
+      //  avatar.setFileSize(file.getSize());
+      //  avatar.setMediaType(file.getContentType());
+      //  avatar.setData(file.getBytes());
 
-        avatarRepository.save(avatar);
-    }
-    private String getExtension(String fileName) {
-        return fileName.substring(fileName.lastIndexOf(".") + 1);
-    }
+       // avatarRepository.save(avatar);
+  //  }
+   // private String getExtension(String fileName) {
+      // return fileName.substring(fileName.lastIndexOf(".") + 1);
+   // }
 }
 
 

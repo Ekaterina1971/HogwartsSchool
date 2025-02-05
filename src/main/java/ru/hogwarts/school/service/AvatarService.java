@@ -5,14 +5,18 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
+import ru.hogwarts.school.exception.NoAvatarsException;
+import ru.hogwarts.school.exception.WrongIndexException;
 import ru.hogwarts.school.model.Avatar;
 import ru.hogwarts.school.model.Student;
 import ru.hogwarts.school.repository.AvatarRepository;
+import ru.hogwarts.school.service.StudentService;
 
 import java.io.*;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.util.Collection;
+import java.util.Objects;
 
 import static java.nio.file.StandardOpenOption.CREATE_NEW;
 import static io.swagger.v3.core.util.AnnotationsUtils.getExtensions;
@@ -21,37 +25,64 @@ import static io.swagger.v3.core.util.AnnotationsUtils.getExtensions;
 @Transactional
 public class AvatarService {
     @Value("${path.to.avatars.folder}")
-    private String avatarsDir;
+    private final Path avatarsDir;
 
     private final AvatarRepository avatarRepository;
+   // private final StudentRepository studentRepository;
     private final StudentService studentService;
 
-    public AvatarService(AvatarRepository avatarRepository, StudentService studentService) {
+    public AvatarService(AvatarRepository avatarRepository, StudentService studentService, @Value("${path.avatars}") Path path) {
         this.avatarRepository = avatarRepository;
         this.studentService = studentService;
+       // this.studentRepository = studentRepository;
+        this.avatarsDir = path;
+    }
+    public Avatar createAvatar(Avatar avatar) {
+        return avatarRepository.save(avatar);
     }
 
-    public void uploadAvatar(Long studentId, MultipartFile avatarFile) throws IOException {
+    public Avatar readAvatar(Long id) {
+        return avatarRepository.findByStudentId(id).orElse(new Avatar());
+    }
+
+    public Collection<Avatar> readAllAvatars() {
+        if (avatarRepository.count() == 0) {
+            throw new NoAvatarsException();
+        }
+
+        return avatarRepository.findAll();
+    }
+
+    public Avatar updateAvatar(Avatar avatar) {
+        if (!avatarRepository.existsById(avatar.getId())) {
+            throw new WrongIndexException();
+        }
+
+        return avatarRepository.save(avatar);
+    }
+
+    public void deleteAvatar(Long id) {
+        if (!avatarRepository.existsById(id)) {
+            throw new WrongIndexException();
+        }
+        avatarRepository.deleteById(id);
+    }
+
+    public void uploadAvatar(Long studentId, MultipartFile avatarFile) throws IOException{
         Student student = studentService.findStudent(studentId);
 //        хранит путь до директории с загружаемыми файлами.
-        Path filePath = Path.of(avatarsDir, student + "." + getExtensions(avatarFile.getOriginalFilename()));
+        Path filePath = Path.of(String.valueOf(avatarsDir), student + "." + getExtensions(Objects.requireNonNull(avatarFile.getOriginalFilename())));
 //        Создаем нужную нам директорию для хранения данных и удаляем из нее файл, если он уже присутствует там.
         Files.createDirectories(filePath.getParent());
         Files.deleteIfExists(filePath);
-//        конструкция нам нужна, чтобы следить за закрытием открытых ресурсов
         try (
-//                чтение файла. Открываем входной поток командой avatarFile.getInputStream() и начинаем считывать данные
-                InputStream is = avatarFile.getInputStream();
-//                запись файла
-                OutputStream os = Files.newOutputStream(filePath, CREATE_NEW);
-//                буферизация для чтения не по байтно, а частями заданного размера
-                BufferedInputStream bis = new BufferedInputStream(is, 1024);
-//                для записи
-                BufferedOutputStream bos = new BufferedOutputStream(os, 1024);
-        ) {
-//            запустить сам процесс передачи данных методом transferTo.
-            bis.transferTo(bos);
-        }
+                    InputStream is = avatarFile.getInputStream();
+                    OutputStream os = Files.newOutputStream(filePath, CREATE_NEW);
+                    BufferedInputStream bis = new BufferedInputStream(is, 1024);
+                    BufferedOutputStream bos = new BufferedOutputStream(os, 1024);
+            ) {
+                bis.transferTo(bos);
+            }
         Avatar avatar = new Avatar();
         avatar.setStudent(student);
         avatar.setFilePath(filePath.toString());
