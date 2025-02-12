@@ -6,7 +6,6 @@ import ru.hogwarts.school.model.Student;
 import ru.hogwarts.school.service.StudentService;
 
 import java.util.Collection;
-import java.util.Collections;
 
 @RestController
 @RequestMapping("/student")
@@ -59,5 +58,4 @@ public class StudentController {
                 .map(Student::getFaculty)
                 .orElse(null).toString();
     }
-
 }

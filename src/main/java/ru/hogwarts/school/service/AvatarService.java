@@ -29,23 +29,15 @@ public class AvatarService {
     }
     public void uploadAvatar(Long studentId, MultipartFile avatarFile) throws IOException {
         Student student = studentService.findStudent(studentId);
-//        хранит путь до директории с загружаемыми файлами.
         Path filePath = Path.of(avatarsDir, student + "." + getExtensions(avatarFile.getOriginalFilename()));
-//        Создаем нужную нам директорию для хранения данных и удаляем из нее файл, если он уже присутствует там.
         Files.createDirectories(filePath.getParent());
         Files.deleteIfExists(filePath);
-//        конструкция нам нужна, чтобы следить за закрытием открытых ресурсов
         try (
-//                чтение файла. Открываем входной поток командой avatarFile.getInputStream() и начинаем считывать данные
                 InputStream is = avatarFile.getInputStream();
-//                запись файла
                 OutputStream os = Files.newOutputStream(filePath, CREATE_NEW);
-//                буферизация для чтения не по байтно, а частями заданного размера
                 BufferedInputStream bis = new BufferedInputStream(is, 1024);
-//                для записи
                 BufferedOutputStream bos = new BufferedOutputStream(os, 1024);
         ) {
-//            запустить сам процесс передачи данных методом transferTo.
             bis.transferTo(bos);
         }
         Avatar avatar = new Avatar();
@@ -62,6 +54,4 @@ public class AvatarService {
     public Avatar findAvatar(Long studentId) {
         return avatarRepository.findByStudentId(studentId).orElse(new Avatar());
     }
-
-
 }
