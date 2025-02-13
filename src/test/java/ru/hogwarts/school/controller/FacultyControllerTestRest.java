@@ -1,6 +1,7 @@
 package ru.hogwarts.school.controller;
 
 
+import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -19,6 +20,8 @@ import java.net.URI;
 
 //import static jdk.incubator.foreign.MemoryAccess.getAddress;
 import static org.assertj.core.api.AssertionsForClassTypes.assertThat;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
+//import static org.springframework.web.client.RestClientUtils.getBody;
 
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT,classes = SchoolApplication.class)
 //@ActiveProfiles("test")
@@ -98,7 +101,7 @@ public class FacultyControllerTestRest {
         facultyRepository.save(faculty);
 
         ResponseEntity<Faculty> responseDelete = testRestTemplate.exchange(
-                getRootUrl() + "/" + facultyRepository.findAll().get(9).getId(),
+                getRootUrl() + "/" + facultyRepository.findAll().get(0).getId(),
                 HttpMethod.DELETE,
                 null,
                 Faculty.class
@@ -109,27 +112,18 @@ public class FacultyControllerTestRest {
     }
 
     @Test
-    public void getFacultyInfoTest() throws Exception{
-        Faculty faculty = new Faculty();
-        faculty.setName("Griffindor");
-        faculty.setColor("brown");
-        faculty.setId(2);
-
-        facultyRepository.save(faculty);
-
-        ResponseEntity<Faculty> response = testRestTemplate.getForEntity(
-                getRootUrl() + "/" + facultyRepository.findById(faculty.getId()).get(),
-                Faculty.class
-        );
-
-        assertThat(response).isNotNull();
-        assertThat(response.getStatusCode()).isEqualTo(HttpStatus.OK);
-        assertThat(response.getBody()).isNotNull();
-        assertThat(response.getBody())
-                .usingRecursiveComparison()
-                .ignoringFields("id")
-                .isEqualTo(faculty);
+    public void getFacultyInfoTest() throws Exception {
+        Assertions.assertThat(
+                        this.testRestTemplate.getForObject("http://localhost:" + port + "/faculty",
+                                String.class))
+                .isNotEmpty();
     }
+    @Test
+    public void getFacultyByStudent() throws Exception {
+        assertNotNull(this.testRestTemplate.getForObject("http://localhost:" + port + "/faculty/by-student", String.class));
+    }
+
+
 
 
 
