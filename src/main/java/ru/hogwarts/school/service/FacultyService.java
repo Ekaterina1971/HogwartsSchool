@@ -6,7 +6,6 @@ import java.util.stream.Collectors;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import ru.hogwarts.school.model.Faculty;
-import ru.hogwarts.school.model.Student;
 import ru.hogwarts.school.repository.FacultyRepository;
 
 @Service
@@ -24,7 +23,7 @@ public class FacultyService {
     }
 
     public Faculty findFaculty(long id) {
-        return facultyRepository.findById(id).get();
+        return facultyRepository.findById(id).orElse(null);
     }
 
     public Faculty editFaculty(Faculty faculty) {
@@ -40,8 +39,8 @@ public class FacultyService {
                 (faculty -> faculty.getColor().equals(color)).collect(Collectors.toList());
     }
 
-    public Faculty findByNameIgnoreCaseAndColorIgnoreCase(String name, String color) {
-        return facultyRepository.findByNameIgnoreCaseAndColorIgnoreCase(name, color);
+    public Faculty findFacultyByNameOrColor(String name, String color) {
+        return facultyRepository.findFacultyByNameOrColor(name, color);
     }
 
     public Optional<Faculty> findByFacultyId(Long facultyId) {
