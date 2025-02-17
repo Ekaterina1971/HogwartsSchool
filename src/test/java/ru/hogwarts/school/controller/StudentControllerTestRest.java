@@ -77,6 +77,26 @@ public class StudentControllerTestRest {
         );
 
     }
+    @Test
+    public void deleteStudentTest() {
+        Student student = new Student();
+        student.setName("Oleg");
+        student.setAge(15);
+
+
+        studentRepository.save(student);
+
+        ResponseEntity<Student> responseDelete = testRestTemplate.exchange(
+                getAddress() + "/" + studentRepository.findAll().get(0).getId(),
+                HttpMethod.DELETE,
+                null,
+                Student.class
+        );
+
+        assertThat(responseDelete.getStatusCode()).isEqualTo(HttpStatus.OK);
+        assertThat(responseDelete.getBody()).isNull();
+    }
+
 
 
 
