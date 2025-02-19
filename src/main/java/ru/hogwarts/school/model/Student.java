@@ -10,10 +10,18 @@ public class Student {
     private long id;
     private String name;
     private int age;
-@ManyToOne
+@ManyToOne()
 @JoinColumn(name = "faculty_id")
-@JsonIgnore
+//@JsonIgnore
     private Faculty faculty;
+
+    public Faculty getFaculty() {
+        return faculty;
+    }
+
+    public void setFaculty(Faculty faculty) {
+        this.faculty = faculty;
+    }
 
     public Student() {
     }
@@ -46,6 +54,7 @@ public class Student {
     public void setAge(int age) {
         this.age = age;
     }
+
     @Override
     public boolean equals(Object o) {
         if (this == o)
@@ -55,10 +64,12 @@ public class Student {
         Student student = (Student) o;
         return id == student.id && age == student.age && Objects.equals(name, student.name);
     }
+
     @Override
     public int hashCode() {
         return Objects.hash(id, name, age);
     }
+
     @Override
     public String toString() {
         return "Student{" +
@@ -69,7 +80,9 @@ public class Student {
                 '}';
     }
 
-    public Object getFaculty() {
-        return id;
+    public Object setFaculty() {
+        return faculty;
     }
+
+
 }
