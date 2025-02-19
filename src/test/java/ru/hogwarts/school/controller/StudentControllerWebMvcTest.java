@@ -100,7 +100,6 @@ public class StudentControllerWebMvcTest {
               jsonObject.put("age", editStudent.getAge());
 
               when(studentService.editStudent(any(Student.class))).thenReturn(editStudent);
-             // when(studentRepository.findStudent(id)).thenReturn(editStudent);
               when(studentRepository.save(any(Student.class))).thenReturn(editStudent);
               mockMvc.perform(MockMvcRequestBuilders
                             .put("/student" + editStudent.getId())
