@@ -50,15 +50,15 @@ public class FacultyController {
     }
 
     @RequestMapping
-    public List<Faculty> colorsOfFaculty(@RequestParam String color) {
+    public Collection<Faculty> colorsOfFaculty(@RequestParam String color) {
         return facultyService.facultyColor(color);
     }
 
     @GetMapping("/Color")
-    public ResponseEntity<Faculty> findByNameIgnoreCaseAndColorIgnoreCase(@RequestParam String name,
+    public ResponseEntity<Faculty> findFacultyByNameOrColor(@RequestParam String name,
                                                                           @RequestParam(required = false) String color) {
         if (name != null && !name.isBlank() && color != null && !color.isBlank()) {
-            return ResponseEntity.ok(facultyService.findByNameIgnoreCaseAndColorIgnoreCase(name, color));
+            return ResponseEntity.ok(facultyService.findFacultyByNameOrColor(name, color));
         }
         return ResponseEntity.ok().build();
     }

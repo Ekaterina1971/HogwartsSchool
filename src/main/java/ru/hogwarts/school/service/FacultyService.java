@@ -35,13 +35,14 @@ public class FacultyService {
         facultyRepository.deleteById(id);
     }
 
-    public List<Faculty> facultyColor(String color) {
-        return facultyRepository.findAll().stream().filter
+    public Collection<Faculty> facultyColor(String color) {
+        return facultyRepository.
+                findAll().stream().filter
                 (faculty -> faculty.getColor().equals(color)).collect(Collectors.toList());
     }
 
-    public Faculty findByNameIgnoreCaseAndColorIgnoreCase(String name, String color) {
-        return facultyRepository.findByNameIgnoreCaseAndColorIgnoreCase(name, color);
+    public Faculty findFacultyByNameOrColor(String name, String color) {
+        return facultyRepository.findFacultyByNameOrColor(name, color);
     }
 
     public Optional<Faculty> findByFacultyId(Long facultyId) {

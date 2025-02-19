@@ -5,6 +5,8 @@ import jakarta.persistence.*;
 
 import java.util.List;
 import java.util.Objects;
+import java.util.Set;
+
 @Entity
 public class Faculty {
     @Id
@@ -80,5 +82,8 @@ public class Faculty {
                 ", color='" + color + '\'' +
                 '}';
 
+    }
+
+    public void setStudents(Set<Student> students) {
     }
 }

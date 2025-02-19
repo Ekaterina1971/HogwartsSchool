@@ -45,4 +45,8 @@ public class StudentService {
     public Optional<Student> findById(Long id) {
         return studentRepository.findById(id);
     }
+
+    public <T> Object editStudent(T eq, T any) {
+        return null;
+    }
 }

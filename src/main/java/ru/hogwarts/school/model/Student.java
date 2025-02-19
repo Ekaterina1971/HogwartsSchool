@@ -72,4 +72,8 @@ public class Student {
     public Object getFaculty() {
         return id;
     }
+
+    public void setFaculty(Faculty faculty) {
+        this.faculty = faculty;
+    }
 }
