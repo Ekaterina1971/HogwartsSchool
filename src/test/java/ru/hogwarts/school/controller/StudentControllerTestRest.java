@@ -55,7 +55,6 @@ class StudentControllerTestRest {
         Student student = new Student();
         student.setName("Filip");
         student.setAge(19);
-        //student.setId(1L);
         student.setFaculty(faculty);
 
         ResponseEntity<Student> response = this.testRestTemplate.postForEntity(
