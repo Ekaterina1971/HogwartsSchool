@@ -145,10 +145,6 @@ public class FacultyControllerTestRest {
                 String.class)).isNotNull();
         assertThat(faculty.getName()).isEqualTo("Hogwarts");
 
-
     }
-
-
-
 
 }

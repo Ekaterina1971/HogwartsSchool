@@ -84,32 +84,44 @@ class StudentControllerTestRest {
         student.setName("Filimon");
         student.setAge(19);
         student.setFaculty(savedFaculty);
-        Student savedStudent = studentRepository.save(student);
 
-        assertThat(savedStudent.getId()).isGreaterThan(0);
+        studentRepository.save(student);
 
-        savedStudent.setName("Rovena");
+        student.setName("Rovena");
+        student.setAge(17);
 
-        this.testRestTemplate.put(getAddress(),
-                         savedStudent.getId(),
-                         savedStudent);
+       RequestEntity<Student> request = new RequestEntity<>(student, HttpMethod.PUT, URI.create(getAddress()));
 
-        ResponseEntity<Student> editStudent = this.testRestTemplate.postForEntity(
+       testRestTemplate.put(getAddress(), student,
+                         Student.class);
+
+        ResponseEntity<Student> response = testRestTemplate.exchange(
                 getAddress(),
-                savedStudent.getId(),
+                HttpMethod.PUT,
+                request,
                 Student.class);
 
-        assertThat(editStudent).isNotNull();
-        assertThat(editStudent.getBody().getName()).isEqualTo(savedStudent.getName());
+        assertThat(response).isNotNull();
+        assertThat(response.getStatusCode()).isEqualTo(HttpStatus.OK);
+        assertThat(response.getBody()).isNotNull();
+        assertThat(response.getBody()).usingRecursiveComparison()
+                .ignoringFields("id")
+                .isEqualTo(student);
+
     }
 
 
     @Test
     public void deleteStudentTest() {
+        Faculty faculty = new Faculty();
+        faculty.setName("Hufflepuff");
+        faculty.setColor("bluered");
+        facultyRepository.save(faculty);
+
         Student student = new Student();
         student.setName("Oleg");
         student.setAge(15);
-
+        student.setFaculty(faculty);
 
         studentRepository.save(student);
 
@@ -125,16 +137,28 @@ class StudentControllerTestRest {
     }
     @Test
     public void findAllStudentTest(){
-       // Student student = new Student();
-       // student.setName("Vera");
-      //  student.setAge(13);
+        Faculty faculty1 = new Faculty();
+        faculty1.setName("Huffl");
+        faculty1.setColor("blueyelloy");
+        facultyRepository.save(faculty1);
 
-        //Student student1 = new Student();
-        //student1.setName("Ivan");
-       // student1.setAge(14);
+        Faculty faculty2 = new Faculty();
+        faculty2.setName("Hufflq");
+        faculty2.setColor("redyelloy");
+        facultyRepository.save(faculty2);
 
-       // studentRepository.save(student);
-       // studentRepository.save(student1);
+        Student student1 = new Student();
+        student1.setName("Vera");
+        student1.setAge(13);
+        student1.setFaculty(faculty1);
+
+        Student student2 = new Student();
+        student2.setName("Ivan");
+        student2.setAge(14);
+        student2.setFaculty(faculty2);
+
+        studentRepository.save(student1);
+        studentRepository.save(student2);
 
         ResponseEntity<Student> response = testRestTemplate.exchange(
                 getAddress() + "/" + studentRepository.findAll(),
@@ -142,11 +166,60 @@ class StudentControllerTestRest {
                 null,
                 Student.class
         );
-        assertThat(response.getStatusCode()).isEqualTo(HttpStatus.OK);
-        assertThat(response.getBody()).isNull();
+        assertThat(response.getBody()).isNotNull();
     }
 
+    @Test
+    public void findByAgeBetweenTest(){
+        Faculty faculty1 = new Faculty();
+        faculty1.setName("Griff");
+        faculty1.setColor("grenyelloy");
+        facultyRepository.save(faculty1);
+
+        Faculty faculty2 = new Faculty();
+        faculty2.setName("Kort");
+        faculty2.setColor("redwiht");
+        facultyRepository.save(faculty2);
+
+        Student student1 = new Student();
+        student1.setName("Verona");
+        student1.setAge(13);
+        student1.setFaculty(faculty1);
+        studentRepository.save(student1);
+
+        Student student2 = new Student();
+        student2.setName("Ivaneska");
+        student2.setAge(17);
+        student2.setFaculty(faculty2);
+        studentRepository.save(student2);
+
+        int minAge = 15;
+        int maxAge = 19;
+
+        String result = testRestTemplate.getForObject("http://localhost:" + port + "/student/filter?min=16&max=25", String.class);
+        assertThat(result).isNotNull();
+    }
+    @Test
+    public void getFacultyByStudentIdTest() {
+        Faculty faculty1 = new Faculty();
+        faculty1.setName("Griff");
+        faculty1.setColor("grenyelloy");
+        facultyRepository.save(faculty1);
+
+        Student student1 = new Student();
+        student1.setName("Pavel");
+        student1.setAge(18);
+        student1.setFaculty(faculty1);
+        studentController.createStudent(student1);
+
+        Faculty actual = this.testRestTemplate.getForObject("http://localhost:"
+                + port + "/student" + student1.getId() + "/faculty", Faculty.class);
+
+        assertThat(actual.getId()).isEqualTo(new Faculty().getId());
+    }
 }
+
+
 
 
 
