@@ -12,7 +12,7 @@ public class Student {
     private int age;
 @ManyToOne()
 @JoinColumn(name = "faculty_id")
-//@JsonIgnore
+@JsonIgnore
     private Faculty faculty;
 
     public Faculty getFaculty() {

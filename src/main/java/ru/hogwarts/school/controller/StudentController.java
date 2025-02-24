@@ -59,4 +59,18 @@ public class StudentController {
                 .map(Student::getFaculty)
                 .orElse(null).toString();
     }
+    @GetMapping("count-students")
+    public ResponseEntity<Long> countAllStudents() {
+        return ResponseEntity.ok(studentService.countAllStudents());
+    }
+
+    @GetMapping("get-average-age")
+    public ResponseEntity<Double> getAverageAge() {
+        return ResponseEntity.ok(studentService.getAverageAge());
+    }
+
+    @GetMapping("find-five-last")
+    public ResponseEntity<Collection<Student>> findFiveLast() {
+        return ResponseEntity.ok(studentService.findFiveLast());
+    }
 }
