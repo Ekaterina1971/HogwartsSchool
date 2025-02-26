@@ -1,14 +1,11 @@
 package ru.hogwarts.school.service;
 
-import java.util.ArrayList;
 import java.util.Collection;
-import java.util.HashMap;
 import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import ru.hogwarts.school.model.Faculty;
-import ru.hogwarts.school.model.Student;
+import ru.hogwarts.school.exception.model.Student;
 import ru.hogwarts.school.repository.StudentRepository;
 
 @Service

@@ -7,19 +7,16 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.web.client.TestRestTemplate;
 import org.springframework.boot.test.web.server.LocalServerPort;
-import org.springframework.core.ParameterizedTypeReference;
 import org.springframework.http.HttpMethod;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.RequestEntity;
 import org.springframework.http.ResponseEntity;
 import org.springframework.test.context.ActiveProfiles;
-import ru.hogwarts.school.SchoolApplication;
-import ru.hogwarts.school.model.Faculty;
+import ru.hogwarts.school.exception.model.Faculty;
 import ru.hogwarts.school.repository.FacultyRepository;
 import ru.hogwarts.school.service.FacultyService;
 
 import java.net.URI;
-import java.util.List;
 
 //import static jdk.incubator.foreign.MemoryAccess.getAddress;
 import static org.assertj.core.api.AssertionsForClassTypes.assertThat;

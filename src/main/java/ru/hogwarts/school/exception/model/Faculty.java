@@ -1,6 +1,5 @@
-package ru.hogwarts.school.model;
+package ru.hogwarts.school.exception.model;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import jakarta.persistence.*;
 
