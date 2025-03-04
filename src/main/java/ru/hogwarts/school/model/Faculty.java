@@ -1,10 +1,12 @@
-package ru.hogwarts.school.exception.model;
+package ru.hogwarts.school.model;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import jakarta.persistence.*;
 
 import java.util.List;
 import java.util.Objects;
+import java.util.Set;
+
 @Entity
 @JsonIgnoreProperties(value = {"students"})
 public class Faculty {
@@ -84,5 +86,8 @@ public class Faculty {
                 ", color='" + color + '\'' +
                 '}';
 
+    }
+
+    public void setStudents(Set<Student> students) {
     }
 }

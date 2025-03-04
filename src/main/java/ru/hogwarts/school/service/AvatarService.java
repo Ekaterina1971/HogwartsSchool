@@ -6,8 +6,8 @@ import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 import ru.hogwarts.school.exception.PageSettingsUnderZero;
-import ru.hogwarts.school.exception.model.Avatar;
-import ru.hogwarts.school.exception.model.Student;
+import ru.hogwarts.school.model.Avatar;
+import ru.hogwarts.school.model.Student;
 import ru.hogwarts.school.repository.AvatarRepository;
 
 import java.io.*;
