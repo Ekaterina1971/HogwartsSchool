@@ -80,12 +80,7 @@ public class Faculty {
 
     @Override
     public String toString() {
-        return "Faculty{" +
-                "id=" + id +
-                ", name='" + name + '\'' +
-                ", color='" + color + '\'' +
-                '}';
-
+        return null;
     }
 
     public void setStudents(Set<Student> students) {

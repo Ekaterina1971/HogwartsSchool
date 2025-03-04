@@ -118,8 +118,9 @@ public class StudentControllerWebMvcTest {
         Student student = new Student();
         student.setName("Oleg");
         student.setAge(18);
+        when(studentRepository.save(any(Student.class))).thenReturn(student);
 
-        when(studentRepository.findStudent(1L)).thenReturn(student);
+        when(studentRepository.findById(id)).thenReturn(Optional.of(student));
 
         mockMvc.perform(delete("/student?id=1")
                         .contentType(MediaType.APPLICATION_JSON)
