@@ -49,21 +49,27 @@ public class StudentService {
     }
 
     public Collection<Student> findByAgeBetween (int fromAge, int toAge) {
+        logger.info("findAllStudent method has been invoked");
         return studentRepository.findByAgeBetween(fromAge, toAge);
     }
 
     public Optional<Student> findById(Long id) {
+        logger.info("findById method has been invoked");
+        logger.error("There is no student with id");
         return studentRepository.findById(id);
     }
     public Long countAllStudents() {
+        logger.info("countAllStudent method has been invoked");
         return studentRepository.countAllStudents();
     }
 
     public Double getAverageAge() {
+        logger.info("getAverageAge method has been invoked");
         return studentRepository.getAverageAge();
     }
 
     public Collection<Student> findFiveLast() {
+        logger.info("findFiveLast method has been invoked");
         return studentRepository.findFiveLast();
     }
 }
