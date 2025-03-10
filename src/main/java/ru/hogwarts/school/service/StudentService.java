@@ -1,7 +1,9 @@
 package ru.hogwarts.school.service;
 
 import java.util.Collection;
+import java.util.List;
 import java.util.Optional;
+import java.util.stream.Stream;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -71,5 +73,33 @@ public class StudentService {
     public Collection<Student> findFiveLast() {
         logger.info("findFiveLast method has been invoked");
         return studentRepository.findFiveLast();
+    }
+
+    public List<String> getAllStartWithA() {
+        return studentRepository.findAll().stream()
+                .map(Student::getName)
+                .map(String::toUpperCase)
+                .filter(s -> s.startsWith("A"))
+                .sorted()
+                .toList();
+    }
+
+    public double getAverageAgeFromStudents() {
+        return studentRepository.findAll().stream()
+                .mapToInt(Student::getAge)
+                .average()
+                .orElse(-1);
+    }
+
+    public int calculate() {
+        long start = System.currentTimeMillis();
+        int result = Stream
+                .iterate(1, a -> a +1)
+                .limit(1_000_000)
+                .parallel()
+                .reduce(0, (a, b) -> a + b );
+        long finish = System.currentTimeMillis();
+        logger.info("Calculate time: " + (finish - start));
+        return result;
     }
 }
