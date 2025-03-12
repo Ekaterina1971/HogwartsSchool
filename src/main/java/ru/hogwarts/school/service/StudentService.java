@@ -102,4 +102,50 @@ public class StudentService {
         logger.info("Calculate time: " + (finish - start));
         return result;
     }
+
+    public void printStudentsNameParallel(){
+       List<Student> students = studentRepository.findAll();
+        System.out.println(students.get(0));
+        System.out.println(students.get(1));
+        System.out.println(students.get(2));
+
+        new Thread(() -> {
+            System.out.println(students.get(3));
+            System.out.println(students.get(4));
+            System.out.println(students.get(5));
+
+        }).start();
+
+        new Thread(() -> {
+            System.out.println(students.get(6));
+            System.out.println(students.get(7));
+            System.out.println(students.get(8));
+
+        }).start();
+
+    }
+
+    public void printStudentsNameSync() {
+        List<Student> students = studentRepository.findAll();
+
+        synchronized (students) {
+            System.out.println(students.get(0));
+            System.out.println(students.get(1));
+            System.out.println(students.get(2));
+
+            new Thread(() -> {
+                System.out.println(students.get(3));
+                System.out.println(students.get(4));
+                System.out.println(students.get(5));
+
+            }).start();
+
+            new Thread(() -> {
+                System.out.println(students.get(6));
+                System.out.println(students.get(7));
+                System.out.println(students.get(8));
+
+            }).start();
+        }
+    }
 }
