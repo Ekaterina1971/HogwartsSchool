@@ -23,6 +23,8 @@ public class StudentService {
         this.studentRepository = studentRepository;
     }
 
+    private final Object flag = new Object();
+
     public Student addStudent(Student student) {
         logger.info("The student has been added to the application");
         return studentRepository.save(student);
@@ -105,21 +107,21 @@ public class StudentService {
 
     public void printStudentsNameParallel(){
        List<Student> students = studentRepository.findAll();
-        System.out.println(students.get(0));
-        System.out.println(students.get(1));
-        System.out.println(students.get(2));
+        System.out.println(students.get(0).getName());
+        System.out.println(students.get(1).getName());
+        System.out.println(students.get(2).getName());
 
         new Thread(() -> {
-            System.out.println(students.get(3));
-            System.out.println(students.get(4));
-            System.out.println(students.get(5));
+            System.out.println(students.get(3).getName());
+            System.out.println(students.get(4).getName());
+            System.out.println(students.get(5).getName());
 
         }).start();
 
         new Thread(() -> {
-            System.out.println(students.get(6));
-            System.out.println(students.get(7));
-            System.out.println(students.get(8));
+            System.out.println(students.get(6).getName());
+            System.out.println(students.get(7).getName());
+            System.out.println(students.get(8).getName());
 
         }).start();
 
@@ -128,24 +130,30 @@ public class StudentService {
     public void printStudentsNameSync() {
         List<Student> students = studentRepository.findAll();
 
-        synchronized (students) {
-            System.out.println(students.get(0));
-            System.out.println(students.get(1));
-            System.out.println(students.get(2));
+        printStudent(students.get(0).getName());
+        printStudent(students.get(1).getName());
+        printStudent(students.get(2).getName());
 
             new Thread(() -> {
-                System.out.println(students.get(3));
-                System.out.println(students.get(4));
-                System.out.println(students.get(5));
+                printStudent(students.get(3).getName());
+                printStudent(students.get(4).getName());
+                printStudent(students.get(5).getName());
 
             }).start();
 
             new Thread(() -> {
-                System.out.println(students.get(6));
-                System.out.println(students.get(7));
-                System.out.println(students.get(8));
+                printStudent(students.get(6).getName());
+                printStudent(students.get(7).getName());
+                printStudent(students.get(8).getName());
 
             }).start();
+
+    }
+
+    private void printStudent(String student) {
+        synchronized (flag) {
+           System.out.println(student);
         }
     }
+
 }
