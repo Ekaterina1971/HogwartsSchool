@@ -23,7 +23,7 @@ public class StudentService {
         this.studentRepository = studentRepository;
     }
 
-    private final Object flag = new Object();
+    //private final Object flag = new Object();
 
     public Student addStudent(Student student) {
         logger.info("The student has been added to the application");
@@ -107,24 +107,27 @@ public class StudentService {
 
     public void printStudentsNameParallel(){
        List<Student> students = studentRepository.findAll();
-        System.out.println(students.get(0).getName());
-        System.out.println(students.get(1).getName());
-        System.out.println(students.get(2).getName());
+        printStudentParallel(students.get(0).getName());
+        printStudentParallel(students.get(1).getName());
+        printStudentParallel(students.get(2).getName());
 
         new Thread(() -> {
-            System.out.println(students.get(3).getName());
-            System.out.println(students.get(4).getName());
-            System.out.println(students.get(5).getName());
+            printStudentParallel(students.get(3).getName());
+            printStudentParallel(students.get(4).getName());
+            printStudentParallel(students.get(5).getName());
 
         }).start();
 
         new Thread(() -> {
-            System.out.println(students.get(6).getName());
-            System.out.println(students.get(7).getName());
-            System.out.println(students.get(8).getName());
+            printStudentParallel(students.get(6).getName());
+            printStudentParallel(students.get(7).getName());
+            printStudentParallel(students.get(8).getName());
 
         }).start();
 
+    }
+    private void printStudentParallel(String student){
+        System.out.println(Thread.currentThread() + " " +student);
     }
 
     public void printStudentsNameSync() {
@@ -150,10 +153,10 @@ public class StudentService {
 
     }
 
-    private void printStudent(String student) {
-        synchronized (flag) {
-           System.out.println(student);
+    private synchronized void printStudent(String student) {
+
+           System.out.println(Thread.currentThread() + " " +student);
         }
     }
 
-}
+
